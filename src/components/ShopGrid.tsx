@@ -229,7 +229,7 @@ export const shopColumns: { title: string; items: Product[] }[] = [
           },
         ],
       },
-      { name: "Vattenflaska", image: "/images/basic/image.png" },
+      { name: "Vattenflaska", image: "/images/Tändsticksask/image copy 5.png" },
       { name: "Produkt 5" },
       { name: "Produkt 6" },
     ],
@@ -260,7 +260,7 @@ export default function ShopGrid() {
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="aspect-[4/3] w-full rounded-md object-cover"
+                      className="aspect-[4/3] w-full rounded-md object-contain"
                     />
                   )}
                 </Link>
