@@ -205,10 +205,10 @@ export const shopColumns: { title: string; items: Product[] }[] = [
           },
         ],
       },
-      { name: "Kulspetspenna", image: "/images/image copy 8.png" },
+      { name: "Kulspetspenna", image: "/images/Tändsticksask/image copy 4.png" },
       {
         name: "Tändsticksask",
-        image: "/images/Tändsticksask/image copy 3.png",
+        image: "/images/Tändsticksask/image.png",
         description: "Tändsticksask med valfri färg på lådan och plats för din logotyp.",
         minQuantity: 2500,
         options: [
