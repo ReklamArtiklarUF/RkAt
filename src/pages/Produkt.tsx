@@ -47,8 +47,8 @@ export default function Produkt() {
                 {found.item.options?.length ? (
                   <>
                     <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-border py-5 text-sm">
-                      <div><dt className="text-muted-foreground">Format</dt><dd className="mt-1 font-medium">{found.item.name === "Läppbalsam" ? "7 cm, diameter 1,9 cm" : found.item.name === "Tändsticksask" ? "53 × 36 × 12 mm" : <>40 x 10 x 35<br />38 x 10 x 42</>}</dd></div>
-                      <div><dt className="text-muted-foreground">Grundfärger</dt><dd className="mt-1 font-medium">{found.item.name === "Läppbalsam" ? "17 alternativ" : found.item.name === "Tändsticksask" ? "8 alternativ" : "11 alternativ"}</dd></div>
+                      <div><dt className="text-muted-foreground">Format</dt><dd className="mt-1 font-medium">{found.item.name === "Läppbalsam" ? "7 cm, diameter 1,9 cm" : found.item.name === "Tändsticksask" ? "53 × 36 × 12 mm" : found.item.name === "Vattenflaska" ? "500 ml" : <>40 x 10 x 35<br />38 x 10 x 42</>}</dd></div>
+                      <div><dt className="text-muted-foreground">Grundfärger</dt><dd className="mt-1 font-medium">{found.item.name === "Läppbalsam" ? "17 alternativ" : found.item.name === "Tändsticksask" ? "8 alternativ" : found.item.name === "Vattenflaska" ? "7 alternativ" : "11 alternativ"}</dd></div>
                     </dl>
                     <div className="mt-7 flex flex-wrap items-center gap-3">
                       <Button size="lg" onClick={customize}>Anpassa <ArrowDown aria-hidden="true" /></Button>
@@ -80,6 +80,21 @@ export default function Produkt() {
                                 <li>Tryckbar fram- och/eller baksida (olika motiv möjliga)</li>
                                 <li>Många grundfärger</li>
                               </ul>
+                            </>
+                          ) : found.item.name === "Vattenflaska" ? (
+                            <>
+                              <h2 className="font-heading text-xl font-semibold text-foreground">Information om vattenflaska</h2>
+                              <p className="mt-3">Denna miljövänliga 500 ml vattenflaska har ett praktiskt bärhandtag, vilket gör den till en perfekt följeslagare för vätskeintag på språng. Den är tillverkad av RPET och är inte bara återanvändbar utan också ett hållbart val.</p>
+                              <ul className="mt-5 list-disc space-y-2 pl-5">
+                                <li>BPA-fritt material</li>
+                                <li>Minst 50% återvunnet material</li>
+                              </ul>
+                              <dl className="mt-5 grid gap-3 sm:grid-cols-2">
+                                <div><dt className="text-muted-foreground">Material</dt><dd className="font-medium text-foreground">RPET (återvunna PET-flaskor)</dd></div>
+                                <div><dt className="text-muted-foreground">Storlek</dt><dd className="font-medium text-foreground">20 x ⌀6.5 x 6.5 cm</dd></div>
+                                <div><dt className="text-muted-foreground">Vikt</dt><dd className="font-medium text-foreground">80 gr.</dd></div>
+                                <div><dt className="text-muted-foreground">Kapacitet</dt><dd className="font-medium text-foreground">500 ml</dd></div>
+                              </dl>
                             </>
                           ) : (
                             <>
