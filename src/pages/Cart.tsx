@@ -57,7 +57,8 @@ export default function Cart() {
                 <span>Totalt</span>
                 <span>{priceFormat.format(total)}</span>
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">Preliminärt exempelpris, inte en offert. Som UF företag är vi moms befriade, så alla priser är inkl moms och frakt.</p>
+              <p className="mt-4 text-sm font-bold leading-relaxed text-foreground">Preliminärt exempelpris, inte en offert. Som UF företag är vi moms befriade, så alla priser är inkl moms och frakt.</p>
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">Vi kan även skicka en exempelbild på hur produkten kan se ut.</p>
               <Button className="mt-6 w-full" asChild><Link to="/contact">Kontakta oss om beställningen</Link></Button>
             </aside>
           </div>

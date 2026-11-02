@@ -1,8 +1,11 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
 
 export default function Contact() {
+  const { items, total } = useCart();
+  const priceFormat = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", maximumFractionDigits: 0 });
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -18,6 +21,21 @@ export default function Contact() {
         <section className="section-padding">
           <div className="container mx-auto px-4 md:px-6 max-w-2xl">
             <h2 className="font-heading text-2xl font-bold text-foreground mb-6">Skicka ett meddelande</h2>
+            {items.length > 0 && (
+              <section className="mb-6 rounded-xl border border-primary/30 bg-primary/5 p-5" aria-labelledby="cart-summary-heading">
+                <h3 id="cart-summary-heading" className="font-heading text-lg font-semibold">Det här finns i din kundvagn</h3>
+                <ul className="mt-4 space-y-3 text-sm">
+                  {items.map((item) => (
+                    <li key={item.id} className="flex items-start justify-between gap-4 border-b border-primary/15 pb-3 last:border-0 last:pb-0">
+                      <span><strong>{item.productName}</strong><br />{item.quantity.toLocaleString("sv-SE")} st</span>
+                      <span className="font-semibold">{priceFormat.format(item.totalPrice)}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-4 flex justify-between border-t border-primary/20 pt-3 font-bold"><span>Totalt</span><span>{priceFormat.format(total)}</span></p>
+                <p className="mt-3 text-sm text-muted-foreground">Den här sammanställningen följer med när du kontaktar oss.</p>
+              </section>
+            )}
             <form className="card-elevated space-y-5" onSubmit={(e) => e.preventDefault()}>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1.5">Namn <span className="text-destructive">*</span></label>
