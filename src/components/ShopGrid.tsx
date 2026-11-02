@@ -273,7 +273,10 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             id: "tryckyta",
             label: "Tryckyta",
             kind: "button",
-            choices: [{ label: "30 × 70 mm", price: 0 }],
+            choices: [
+              { label: "30 × 70 mm", price: 0 },
+              { label: "150 × 120 mm", price: 0 },
+            ],
           },
         ],
       },
