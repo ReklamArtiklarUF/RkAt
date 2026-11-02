@@ -16,11 +16,14 @@ import Schedule from "./pages/Schedule.tsx";
 import Stories from "./pages/Stories.tsx";
 import Contact from "./pages/Contact.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Cart from "./pages/Cart.tsx";
+import { CartProvider } from "./context/CartContext.tsx";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    <CartProvider>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -38,10 +41,12 @@ const App = () => (
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/stories" element={<Stories />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/kundvagn" element={<Cart />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
+    </CartProvider>
   </QueryClientProvider>
 );
 

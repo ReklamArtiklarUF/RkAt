@@ -1,15 +1,18 @@
 import { useRef, useState } from "react";
-import { Check, Image as ImageIcon, ArrowRight } from "lucide-react";
+import { Check, Image as ImageIcon, ArrowRight, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import type { ProductOption } from "@/components/ShopGrid";
 import { availableChoices, configurationPrice, selectProductChoice } from "@/lib/product-configuration";
 import type { ProductSelections } from "@/lib/product-configuration";
+import { selectionsForCart, useCart } from "@/context/CartContext";
 
 const priceFormat = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", maximumFractionDigits: 0 });
 
 export default function ProductCustomizer({ options, productName, minQuantity = 1 }: { options: ProductOption[]; productName: string; minQuantity?: number }) {
   const [selected, setSelected] = useState<ProductSelections>({});
+  const [addedMessage, setAddedMessage] = useState(false);
+  const { addItem } = useCart();
   const [quantityText, setQuantityText] = useState("");
   const quantity = Number(quantityText);
   const validQuantity = Number.isInteger(quantity) && quantity >= minQuantity;
@@ -96,7 +99,15 @@ export default function ProductCustomizer({ options, productName, minQuantity = 
             <dl className="mt-5 grid gap-2 text-sm sm:grid-cols-2">{options.map((option) => <div key={option.id}><dt className="text-muted-foreground">{option.label}</dt><dd className="font-medium">{option.choices[selected[option.id]]?.label}</dd></div>)}</dl>
           </> : <p className="mt-3 text-muted-foreground">Välj alla alternativ och antal för att se priset.</p>}
           <p className="mt-4 text-sm text-muted-foreground">Preliminärt exempelpris, inte en offert. Som UF företag är vi moms befriade, så alla priser är inkl moms och frakt.</p>
-          <Button variant="outline" className="mt-6" asChild><Link to="/contact">Kontakta oss <ArrowRight aria-hidden="true" /></Link></Button>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button disabled={!price} onClick={() => {
+              if (!price) return;
+              addItem({ productName, quantity, unitPrice: price.unit, totalPrice: price.total, selections: selectionsForCart(options, selected) });
+              setAddedMessage(true);
+            }}><ShoppingCart aria-hidden="true" /> Lägg i kundvagn</Button>
+            <Button variant="outline" asChild><Link to="/contact">Kontakta oss <ArrowRight aria-hidden="true" /></Link></Button>
+          </div>
+          {addedMessage && <p className="mt-3 text-sm font-medium text-success">Produkten har lagts i kundvagnen.</p>}
         </div>
       </div>
     </section>
