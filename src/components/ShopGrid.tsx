@@ -229,7 +229,7 @@ export const shopColumns: { title: string; items: Product[] }[] = [
           },
         ],
       },
-      { name: "Produkt 4" },
+      { name: "Vattenflaska", image: "/images/basic/image.png" },
       { name: "Produkt 5" },
       { name: "Produkt 6" },
     ],
