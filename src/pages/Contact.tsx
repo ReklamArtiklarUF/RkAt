@@ -1,11 +1,47 @@
+import { useState, type FormEvent } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
+import { formatCartSummary } from "@/lib/contact-email";
 
 export default function Contact() {
   const { items, total } = useCart();
+  const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const priceFormat = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", maximumFractionDigits: 0 });
+  const cartSummary = formatCartSummary(items, total);
+
+  const submitContact = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSending(true);
+    setStatus(null);
+    const formData = new FormData(event.currentTarget);
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          email: formData.get("email"),
+          message: formData.get("message"),
+          cartSummary,
+        }),
+      });
+      const result: { success?: boolean; error?: string } = await response.json();
+      if (!response.ok || !result.success) throw new Error(result.error ?? "Meddelandet kunde inte skickas.");
+      setStatus({ type: "success", message: "Tack! Ditt meddelande har skickats till oss." });
+      event.currentTarget.reset();
+    } catch (error) {
+      setStatus({ type: "error", message: error instanceof Error ? error.message : "Meddelandet kunde inte skickas just nu." });
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -36,7 +72,8 @@ export default function Contact() {
                 <p className="mt-3 text-sm text-muted-foreground">Den här sammanställningen följer med när du kontaktar oss.</p>
               </section>
             )}
-            <form className="card-elevated space-y-5" onSubmit={(e) => e.preventDefault()}>
+            {status && <p role="status" className={`mb-6 rounded-lg border p-4 text-sm font-medium ${status.type === "success" ? "border-success/30 bg-success/10 text-success" : "border-destructive/30 bg-destructive/10 text-destructive"}`}>{status.message}</p>}
+            <form className="card-elevated space-y-5" onSubmit={submitContact}>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1.5">Namn <span className="text-destructive">*</span></label>
                 <input id="name" type="text" required className="w-full border-2 border-input rounded-lg px-4 py-3 text-foreground bg-background placeholder:text-muted-foreground focus:border-primary" placeholder="Ditt fullständiga namn" />
@@ -49,7 +86,7 @@ export default function Contact() {
                 <label htmlFor="message" className="block text-sm font-medium text-foreground mb-1.5">Meddelande <span className="text-destructive">*</span></label>
                 <textarea id="message" required rows={4} className="w-full border-2 border-input rounded-lg px-4 py-3 text-foreground bg-background placeholder:text-muted-foreground focus:border-primary resize-y" placeholder="Hur kan vi hjälpa dig?" />
               </div>
-              <Button type="submit" className="w-full">Skicka meddelande</Button>
+              <Button type="submit" className="w-full" disabled={sending}>{sending ? "Skickar..." : "Skicka meddelande"}</Button>
             </form>
           </div>
         </section>

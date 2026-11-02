@@ -1,0 +1,9 @@
+{
+  "projectId": "72434397",
+  "functions": {
+    "send-contact-email": {
+      "hasChanged": false,
+      "hash": "a1982cddf96f3da626478de8abe44a5b2f0110e53b088932e209d413f6e5cdc2"
+    }
+  }
+}
