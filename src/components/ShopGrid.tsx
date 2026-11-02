@@ -234,6 +234,21 @@ export const shopColumns: { title: string; items: Product[] }[] = [
         image: "/images/Tändsticksask/image copy 5.png",
         options: [
           {
+            id: "farg",
+            label: "Färg på flaskan",
+            kind: "image",
+            choices: [
+              { label: "Vit", price: 0, image: "/images/vattenflaskor/vit.png" },
+              { label: "Ljusblå", price: 0, image: "/images/vattenflaskor/ljusbla.png" },
+              { label: "Ljusgrön", price: 0, image: "/images/vattenflaskor/ljusgron.png" },
+              { label: "Rosa", price: 0, image: "/images/vattenflaskor/rosa.png" },
+              { label: "Röd", price: 0, image: "/images/vattenflaskor/rod.png" },
+              { label: "Blå", price: 0, image: "/images/vattenflaskor/bla.png" },
+              { label: "Orange", price: 0, image: "/images/vattenflaskor/orange.png" },
+              { label: "Transparent", price: 0, image: "/images/vattenflaskor/transparent.png" },
+            ],
+          },
+          {
             id: "antal-farger",
             label: "Antal färger i din design",
             kind: "button",

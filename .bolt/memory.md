@@ -26,11 +26,14 @@
 - Prices labeled as "Preliminärt exempelpris, inte en offert" to manage expectations
 - No direct payment/checkout; contact-based ordering flow
 - Cart content shared with contact form so both company and customer see the same inquiry context
-- Vattenflaska options simplified: only "antal färger i designen" (1–4) and "tryckalternativ" (lasergravyr, fullfärg, otryckt) remain; bottle color and print area removed from selection
+- Vattenflaska options: bottle color selection restored with 8 colors (Vit, Ljusblå, Ljusgrön, Rosa, Röd, Blå, Orange, Transparent); images derived from existing bottle image
+- Vattenflaska print options remain under "Antal färger i din design"; "tryckalternativ" (lasergravyr, fullfärg, otryckt) kept
+- Earlier decision to remove bottle color and print area was reversed per user request
 
 ## Open questions & assumptions
 
 - Assuming cart data is passed via state/props to contact page (mechanism TBD per stack)
 - Exact product types/categories not fully specified
 - Unknown: whether example images are sent manually or via an automated gallery
-- May need similar option simplification for other products
+- May need similar option simplification/restoration for other products
+- Print area option still removed; unclear if it should be restored too

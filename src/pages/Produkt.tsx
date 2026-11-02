@@ -48,7 +48,7 @@ export default function Produkt() {
                   <>
                     <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-border py-5 text-sm">
                       <div><dt className="text-muted-foreground">Format</dt><dd className="mt-1 font-medium">{found.item.name === "Läppbalsam" ? "7 cm, diameter 1,9 cm" : found.item.name === "Tändsticksask" ? "53 × 36 × 12 mm" : found.item.name === "Vattenflaska" ? "500 ml" : <>40 x 10 x 35<br />38 x 10 x 42</>}</dd></div>
-                      <div><dt className="text-muted-foreground">Grundfärger</dt><dd className="mt-1 font-medium">{found.item.name === "Läppbalsam" ? "17 alternativ" : found.item.name === "Tändsticksask" ? "8 alternativ" : found.item.name === "Vattenflaska" ? "7 alternativ" : "11 alternativ"}</dd></div>
+                      <div><dt className="text-muted-foreground">Grundfärger</dt><dd className="mt-1 font-medium">{found.item.name === "Läppbalsam" ? "17 alternativ" : found.item.name === "Tändsticksask" ? "8 alternativ" : found.item.name === "Vattenflaska" ? "8 alternativ" : "11 alternativ"}</dd></div>
                     </dl>
                     <div className="mt-7 flex flex-wrap items-center gap-3">
                       <Button size="lg" onClick={customize}>Anpassa <ArrowDown aria-hidden="true" /></Button>
