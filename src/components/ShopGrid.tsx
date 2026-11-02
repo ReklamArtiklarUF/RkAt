@@ -245,7 +245,6 @@ export const shopColumns: { title: string; items: Product[] }[] = [
               { label: "Röd", price: 0, image: "/images/vattenflaskor/rod.png" },
               { label: "Blå", price: 0, image: "/images/vattenflaskor/bla.png" },
               { label: "Orange", price: 0, image: "/images/vattenflaskor/orange.png" },
-              { label: "Transparent", price: 0, image: "/images/vattenflaskor/transparent.png" },
             ],
           },
           {
