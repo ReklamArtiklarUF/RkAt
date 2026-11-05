@@ -27,6 +27,14 @@ export function availableChoices(option: ProductOption, options: ProductOption[]
 
 export function selectProductChoice(options: ProductOption[], selected: ProductSelections, id: string, index: number): ProductSelections {
   const next = { ...selected, [id]: index };
+  if (id === "antal-farger") {
+    delete next.trycktyp;
+    delete next.tryckstorlek;
+  }
+  if (id === "trycktyp") {
+    delete next.antal-farger;
+    delete next.tryckstorlek;
+  }
   if (id === "tryck" && selected.tryck !== index) {
     for (const option of options) {
       if (option.choices.some((choice) => choice.printMethod)) delete next[option.id];
@@ -57,9 +65,18 @@ export function selectProductChoice(options: ProductOption[], selected: ProductS
 }
 
 export function configurationPrice(options: ProductOption[], selected: ProductSelections, quantity: number) {
-  const complete = options.length > 0 && options.every((option) =>
-    availableChoices(option, options, selected).some(({ index }) => index === selected[option.id]),
-  ) && Number.isInteger(quantity) && quantity > 0;
+  const isBottle = options.some((option) => option.id === "trycktyp");
+  const bottlePrintChoice = selected["antal-farger"] !== undefined || selected.trycktyp !== undefined;
+  const bottlePrintChoiceIsExclusive = (selected["antal-farger"] !== undefined) !== (selected.trycktyp !== undefined);
+  const complete = isBottle
+    ? options.filter((option) => !["antal-farger", "trycktyp"].includes(option.id)).every((option) =>
+        availableChoices(option, options, selected).some(({ index }) => index === selected[option.id]),
+      ) && bottlePrintChoice && bottlePrintChoiceIsExclusive
+    : options.length > 0 && options.every((option) =>
+        availableChoices(option, options, selected).some(({ index }) => index === selected[option.id]),
+      );
+  const validQuantity = Number.isInteger(quantity) && quantity > 0;
+  if (!complete || !validQuantity) return null;
   if (!complete) return null;
   const base = options.find((option) => option.id === "format")?.choices[selected.format]?.price ?? 0;
   const print = options.find((option) => option.id === "tryck")?.choices[selected.tryck]?.price ?? 0;
