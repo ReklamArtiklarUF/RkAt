@@ -39,7 +39,7 @@ export default function ProductCustomizer({ options, productName, minQuantity = 
           const isBottlePrintOption = productName === "Vattenflaska" && option.id === "trycktyp";
           const isBottleColorCount = productName === "Vattenflaska" && option.id === "antal-farger";
           return (
-            <fieldset key={option.id} ref={(element) => { stepRefs.current[step] = element; }} className={`min-w-0 scroll-mt-24 border-b border-border pb-8 mb-8 ${isBottlePrintOption ? "border-b-0 pt-0 pb-0 mb-8" : ""} ${isBottleColorCount ? "border-b-0 pb-0 mb-3" : ""}`}>
+            <fieldset key={option.id} ref={(element) => { stepRefs.current[step] = element; }} className={`min-w-0 scroll-mt-24 border-b border-border pb-8 mb-8 ${isBottlePrintOption ? "border-b-0 pt-0 pb-0 mb-8" : ""} ${isBottleColorCount ? "border-b-0 pb-0 mb-0" : ""}`}>
               <legend className={isBottlePrintOption ? "sr-only" : "mb-5 flex items-center gap-3 font-heading text-xl font-semibold"}>
                 <span className={isBottlePrintOption ? "sr-only" : "flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary text-sm text-primary"}>{step + 1}</span>
                 {option.label}
