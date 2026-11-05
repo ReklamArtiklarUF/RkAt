@@ -7,10 +7,20 @@ export function availableChoices(option: ProductOption, options: ProductOption[]
   const color = options.find((item) => item.id === "farg");
   const method = print?.choices[selected.tryck]?.label;
   const colorName = color?.choices[selected.farg]?.label;
+  const bottlePrintMethod = options.find((item) => item.id === "trycktyp")?.choices[selected.trycktyp]?.label;
   return option.choices
     .map((choice, index) => ({ choice, index }))
     .filter(({ choice }) => {
       if (choice.label === "Screentryck" && colorName === "Svart") return false;
+      if (option.id === "tryckstorlek") {
+        const dependencyId = bottlePrintMethod ? "trycktyp" : "antal-farger";
+        if (choice.dependsOn?.optionId !== dependencyId) return false;
+      }
+      if (choice.dependsOn) {
+        const dependency = options.find((item) => item.id === choice.dependsOn?.optionId);
+        const dependencyLabel = dependency?.choices[selected[choice.dependsOn.optionId]]?.label;
+        if (!dependencyLabel || !choice.dependsOn.choiceLabels.includes(dependencyLabel)) return false;
+      }
       return !choice.printMethod || choice.printMethod === method;
     });
 }
@@ -25,6 +35,13 @@ export function selectProductChoice(options: ProductOption[], selected: ProductS
     if (coloring) {
       const choices = availableChoices(coloring, options, next);
       if (choices.length === 1) next.fargning = choices[0].index;
+    }
+  }
+  for (const option of options) {
+    if (option.choices.some((choice) => choice.dependsOn?.optionId === id)) {
+      delete next[option.id];
+      const choices = availableChoices(option, options, next);
+      if (choices.length === 1) next[option.id] = choices[0].index;
     }
   }
   if (id === "farg") {
