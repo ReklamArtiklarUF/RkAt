@@ -254,6 +254,9 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             kind: "button",
             choices: [
               { label: "1 färg", price: 0 },
+              { label: "2 färger", price: 0 },
+              { label: "3 färger", price: 0 },
+              { label: "4 färger", price: 0 },
             ],
           },
           {
@@ -271,8 +274,8 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             label: "Storlek på trycket",
             kind: "button",
             choices: [
-              { label: "150 × 120 mm", price: 0, dependsOn: { optionId: "antal-farger", choiceLabels: ["1 färg"] } },
-              { label: "70 × 30 mm", price: 0, dependsOn: { optionId: "antal-farger", choiceLabels: ["1 färg"] } },
+              { label: "150 × 120 mm", price: 0, dependsOn: { optionId: "antal-farger", choiceLabels: ["1 färg", "2 färger", "3 färger", "4 färger"] } },
+              { label: "70 × 30 mm", price: 0, dependsOn: { optionId: "antal-farger", choiceLabels: ["1 färg", "2 färger", "3 färger", "4 färger"] } },
               { label: "205 × 140 mm", price: 0, dependsOn: { optionId: "trycktyp", choiceLabels: ["Fullfärg"] } },
               { label: "35 mm", price: 0, dependsOn: { optionId: "trycktyp", choiceLabels: ["Lasergravyr"] } },
               { label: "Inget tryck", price: 0, dependsOn: { optionId: "trycktyp", choiceLabels: ["Otryckt"] } },
