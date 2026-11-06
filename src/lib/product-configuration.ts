@@ -32,7 +32,7 @@ export function selectProductChoice(options: ProductOption[], selected: ProductS
     delete next.tryckstorlek;
   }
   if (id === "trycktyp") {
-    delete next.antal-farger;
+    delete next["antal-farger"];
     delete next.tryckstorlek;
   }
   if (id === "tryck" && selected.tryck !== index) {
