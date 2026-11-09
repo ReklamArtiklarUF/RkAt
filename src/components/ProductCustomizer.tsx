@@ -20,6 +20,7 @@ export default function ProductCustomizer({ options, productName, minQuantity = 
   const stepRefs = useRef<(HTMLFieldSetElement | null)[]>([]);
   const quantityRef = useRef<HTMLDivElement>(null);
   const priceRef = useRef<HTMLDivElement>(null);
+  const isBottleLayout = options.some((option) => option.id === "trycktyp");
 
   const scrollToStep = (target?: HTMLElement | null) => {
     if (!target) return;
@@ -36,8 +37,8 @@ export default function ProductCustomizer({ options, productName, minQuantity = 
       <div className="max-w-4xl">
         {options.map((option, step) => {
           const choices = availableChoices(option, options, selected);
-          const isBottlePrintOption = productName === "Vattenflaska" && option.id === "trycktyp";
-          const isBottleColorCount = productName === "Vattenflaska" && option.id === "antal-farger";
+          const isBottlePrintOption = isBottleLayout && option.id === "trycktyp";
+          const isBottleColorCount = isBottleLayout && option.id === "antal-farger";
           return (
             <fieldset key={option.id} ref={(element) => { stepRefs.current[step] = element; }} className={`min-w-0 scroll-mt-24 border-b border-border pb-8 mb-8 ${isBottlePrintOption ? "border-b-0 pt-0 pb-0 mb-8" : ""} ${isBottleColorCount ? "border-b-0 pb-0 mb-0" : ""}`}>
               <legend className={isBottlePrintOption ? "sr-only" : "mb-5 flex items-center gap-3 font-heading text-xl font-semibold"}>

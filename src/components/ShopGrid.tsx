@@ -206,7 +206,59 @@ export const shopColumns: { title: string; items: Product[] }[] = [
           },
         ],
       },
-      { name: "Kulspetspenna", image: "/images/Tändsticksask/image copy 4.png" },
+      {
+        name: "Kulspetspenna",
+        image: "/images/Tändsticksask/image copy 4.png",
+        options: [
+          {
+            id: "farg",
+            label: "Färg på pennan",
+            kind: "image",
+            choices: [
+              { label: "Vit", price: 0, swatch: "#f8f8f6" },
+              { label: "Ljusblå", price: 0, swatch: "#74c7f5" },
+              { label: "Ljusgrön", price: 0, swatch: "#8ac63f" },
+              { label: "Rosa", price: 0, swatch: "#f6c9ed" },
+              { label: "Röd", price: 0, swatch: "#f04446" },
+              { label: "Blå", price: 0, swatch: "#203d78" },
+              { label: "Orange", price: 0, swatch: "#f1844e" },
+            ],
+          },
+          {
+            id: "antal-farger",
+            label: "Antal färger i din design",
+            kind: "button",
+            choices: [
+              { label: "1 färg", price: 0 },
+              { label: "2 färger", price: 0 },
+              { label: "3 färger", price: 0 },
+              { label: "4 färger", price: 0 },
+            ],
+          },
+          {
+            id: "trycktyp",
+            label: "Tryckalternativ",
+            kind: "button",
+            choices: [
+              { label: "Lasergravyr", price: 0 },
+              { label: "Fullfärg", price: 0 },
+              { label: "Otryckt", price: 0 },
+            ],
+          },
+          {
+            id: "tryckstorlek",
+            label: "Storlek på trycket",
+            kind: "button",
+            choices: [
+              { label: "150 × 120 mm", price: 0, dependsOn: { optionId: "antal-farger", choiceLabels: ["1 färg", "2 färger", "3 färger", "4 färger"] } },
+              { label: "70 × 30 mm", price: 0, dependsOn: { optionId: "antal-farger", choiceLabels: ["1 färg", "2 färger", "3 färger", "4 färger"] } },
+              { label: "205 × 140 mm", price: 0, dependsOn: { optionId: "trycktyp", choiceLabels: ["Fullfärg"] } },
+              { label: "35 mm", price: 0, dependsOn: { optionId: "trycktyp", choiceLabels: ["Lasergravyr"] } },
+              { label: "Inget tryck", price: 0, dependsOn: { optionId: "trycktyp", choiceLabels: ["Otryckt"] } },
+            ],
+          },
+        ],
+      },
       {
         name: "Tändsticksask",
         image: "/images/Tändsticksask/image.png",
