@@ -242,7 +242,6 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             label: "Bläckfärg",
             kind: "button",
             choices: [
-              { label: "Blå", price: 0 },
               { label: "Svart", price: 0 },
             ],
           },
