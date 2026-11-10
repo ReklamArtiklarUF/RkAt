@@ -7,6 +7,7 @@ export type ProductChoice = {
   swatch?: string;
   printMethod?: string;
   dependsOn?: { optionId: string; choiceLabels: string[] };
+  excludedChoiceLabels?: { optionId: string; choiceLabels: string[] };
   scale?: number;
 };
 
@@ -250,14 +251,17 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             label: "Tryckfärg",
             kind: "button",
             choices: [
-              { label: "Svart", price: 0, swatch: "#292929", dependsOn: { optionId: "hylsa", choiceLabels: ["Vit"] } },
-              { label: "Orange", price: 0, swatch: "#ff481c", dependsOn: { optionId: "hylsa", choiceLabels: ["Vit"] } },
-              { label: "Röd", price: 0, swatch: "#cf0b2f", dependsOn: { optionId: "hylsa", choiceLabels: ["Vit"] } },
+              { label: "Svart", price: 0, swatch: "#292929" },
+              { label: "Orange", price: 0, swatch: "#ff481c" },
+              { label: "Röd", price: 0, swatch: "#cf0b2f" },
               { label: "Mörkröd", price: 0, swatch: "#76212d", dependsOn: { optionId: "hylsa", choiceLabels: ["Vit"] } },
-              { label: "Grön", price: 0, swatch: "#00b449", dependsOn: { optionId: "hylsa", choiceLabels: ["Vit"] } },
+              { label: "Grön", price: 0, swatch: "#00b449" },
               { label: "Turkos", price: 0, swatch: "#087b78", dependsOn: { optionId: "hylsa", choiceLabels: ["Vit"] } },
-              { label: "Blå", price: 0, swatch: "#101b8f", dependsOn: { optionId: "hylsa", choiceLabels: ["Vit"] } },
-              { label: "Lila", price: 0, swatch: "#4e0d70", dependsOn: { optionId: "hylsa", choiceLabels: ["Vit"] } },
+              { label: "Blå", price: 0, swatch: "#101b8f" },
+              { label: "Lila", price: 0, swatch: "#4e0d70" },
+              { label: "Vit", price: 0, swatch: "#ffffff", excludedChoiceLabels: { optionId: "hylsa", choiceLabels: ["Vit"] } },
+              { label: "Rosa", price: 0, swatch: "#ec4899", excludedChoiceLabels: { optionId: "hylsa", choiceLabels: ["Vit"] } },
+              { label: "Gul", price: 0, swatch: "#ffdf3f", excludedChoiceLabels: { optionId: "hylsa", choiceLabels: ["Vit"] } },
             ],
           },
         ],

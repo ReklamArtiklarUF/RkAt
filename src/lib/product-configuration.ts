@@ -21,6 +21,11 @@ export function availableChoices(option: ProductOption, options: ProductOption[]
         const dependencyLabel = dependency?.choices[selected[choice.dependsOn.optionId]]?.label;
         if (!dependencyLabel || !choice.dependsOn.choiceLabels.includes(dependencyLabel)) return false;
       }
+      if (choice.excludedChoiceLabels) {
+        const dependency = options.find((item) => item.id === choice.excludedChoiceLabels?.optionId);
+        const dependencyLabel = dependency?.choices[selected[choice.excludedChoiceLabels.optionId]]?.label;
+        if (dependencyLabel && choice.excludedChoiceLabels.choiceLabels.includes(dependencyLabel)) return false;
+      }
       return !choice.printMethod || choice.printMethod === method;
     });
 }
@@ -46,7 +51,7 @@ export function selectProductChoice(options: ProductOption[], selected: ProductS
     }
   }
   for (const option of options) {
-    if (option.choices.some((choice) => choice.dependsOn?.optionId === id)) {
+    if (option.choices.some((choice) => choice.dependsOn?.optionId === id || choice.excludedChoiceLabels?.optionId === id)) {
       delete next[option.id];
       const choices = availableChoices(option, options, next);
       if (choices.length === 1) next[option.id] = choices[0].index;
