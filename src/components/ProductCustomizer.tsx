@@ -73,6 +73,7 @@ export default function ProductCustomizer({ options, productName, minQuantity = 
                               <span className="text-xs font-normal">Bild saknas</span>
                             </span>
                         )}
+                        {option.id === "tryckfarg" && choice.swatch && <span className="h-8 w-12 rounded-sm border border-black/15 shadow-sm" style={{ background: choice.swatch }} aria-hidden="true" />}
                         <span className={option.kind === "image" ? "flex min-h-16 w-full items-center justify-center px-3 py-3 text-center leading-snug" : ""}>{choice.label}</span>
                         {active && <Check aria-hidden="true" className={option.kind === "image" ? "absolute right-2 top-2 rounded-full bg-primary text-primary-foreground p-0.5 !h-5 !w-5" : "shrink-0"} />}
                       </Button>
