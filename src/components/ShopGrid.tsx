@@ -375,7 +375,7 @@ export default function ShopGrid() {
               <img
                 src={item.image}
                 alt={item.name}
-                className="aspect-[4/3] w-full rounded-md object-contain"
+                className={`aspect-[4/3] w-full rounded-md object-contain ${item.name === "Kulspetspenna" ? "mix-blend-multiply" : ""}`}
               />
             )}
           </Link>
