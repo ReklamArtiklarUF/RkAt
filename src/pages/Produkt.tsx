@@ -19,7 +19,7 @@ export default function Produkt() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="container mx-auto px-4 md:px-6 py-10 flex-1">
+      <main className="w-full px-4 md:px-6 py-10 flex-1">
         <Link to="/butik" className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80">
           <ArrowLeft className="h-4 w-4" /> Tillbaka till butiken
         </Link>

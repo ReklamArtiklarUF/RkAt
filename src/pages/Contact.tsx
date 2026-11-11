@@ -48,14 +48,14 @@ export default function Contact() {
       <Header />
       <main className="flex-1">
         <section className="bg-primary py-16">
-          <div className="container mx-auto px-4 md:px-6 text-center">
+          <div className="w-full px-4 md:px-6 text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-primary-foreground mb-4">Kontakta oss</h1>
             <p className="text-primary-foreground/80 max-w-xl mx-auto">Vi hör gärna från dig. Skicka ett meddelande så återkommer vi så snart vi kan.</p>
           </div>
         </section>
 
         <section className="section-padding">
-          <div className="container mx-auto px-4 md:px-6 max-w-2xl">
+          <div className="w-full px-4 md:px-6 max-w-2xl">
             <h2 className="font-heading text-2xl font-bold text-foreground mb-6">Skicka ett meddelande</h2>
             {items.length > 0 && (
               <section className="mb-6 rounded-xl border border-primary/30 bg-primary/5 p-5" aria-labelledby="cart-summary-heading">

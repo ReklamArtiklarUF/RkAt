@@ -5,7 +5,7 @@ import logo from "@/assets/logo.png";
 export default function Footer() {
   return (
     <footer className="bg-foreground text-background/80">
-      <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
+      <div className="w-full px-4 md:px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Brand */}
           <div>

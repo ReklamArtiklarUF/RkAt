@@ -59,14 +59,14 @@ export default function Instructors() {
       <Header />
       <main className="flex-1">
         <section className="bg-primary py-16">
-          <div className="container mx-auto px-4 md:px-6 text-center">
+          <div className="w-full px-4 md:px-6 text-center">
             <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-primary-foreground mb-4">Våra lärare</h1>
             <p className="text-primary-foreground/80 max-w-xl mx-auto">24 expertlärare med modersmål, dedikerade till din framgång.</p>
           </div>
         </section>
 
         <section className="section-padding">
-          <div className="container mx-auto px-4 md:px-6">
+          <div className="w-full px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {instructors.map((inst) => (
                 <div key={inst.name} className="card-elevated flex flex-col">

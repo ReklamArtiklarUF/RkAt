@@ -27,7 +27,7 @@ export default function OmOss() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <section className="container mx-auto px-4 md:px-6 py-12 md:py-16">
+        <section className="w-full px-4 md:px-6 py-12 md:py-16">
           <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
             Om oss
           </span>
@@ -41,7 +41,7 @@ export default function OmOss() {
           </p>
         </section>
 
-        <section className="container mx-auto px-4 md:px-6 pb-12 md:pb-16">
+        <section className="w-full px-4 md:px-6 pb-12 md:pb-16">
           <h2 className="font-heading text-2xl font-bold text-foreground md:text-3xl">
             Så jobbar vi
           </h2>
@@ -61,7 +61,7 @@ export default function OmOss() {
           </div>
         </section>
 
-        <section className="container mx-auto px-4 md:px-6 py-12 md:py-16">
+        <section className="w-full px-4 md:px-6 py-12 md:py-16">
           <div className="max-w-3xl">
             <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
               Ungdomsföretag
@@ -85,7 +85,7 @@ export default function OmOss() {
         </section>
 
         <section className="border-t border-border bg-card">
-          <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
+          <div className="w-full px-4 md:px-6 py-12 md:py-16">
             <div className="max-w-3xl">
               <h2 className="font-heading text-2xl font-bold text-foreground md:text-3xl">
                 Vet ni redan vad ni vill ha?

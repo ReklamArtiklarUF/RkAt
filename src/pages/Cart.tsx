@@ -13,7 +13,7 @@ export default function Cart() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="container mx-auto flex-1 px-4 py-10 md:px-6">
+      <main className="w-full flex-1 px-4 py-10 md:px-6">
         <Link to="/butik" className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80">
           <ArrowLeft className="h-4 w-4" /> Tillbaka till butiken
         </Link>

@@ -19,7 +19,7 @@ export default function Index() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="hero-overlay absolute inset-0" />
-          <div className="relative container mx-auto px-4 md:px-6 pt-2 lg:pt-4 pb-16 lg:pb-24">
+          <div className="relative w-full px-4 md:px-6 pt-2 lg:pt-4 pb-16 lg:pb-24">
             <div className="max-w-2xl">
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground leading-tight mb-6">
                 Företag i Sverige spenderar omkring      
@@ -45,7 +45,7 @@ export default function Index() {
         <div className="w-full h-1 bg-[hsl(var(--logo-blue))]" />
 
         <section className="py-4 md:py-6" aria-label="Motto">
-          <div className="container mx-auto px-4 md:px-6 text-center">
+          <div className="w-full px-4 md:px-6 text-center">
             <p className="font-heading text-3xl md:text-4xl lg:text-5xl font-extrabold text-[hsl(var(--logo-blue))] tracking-tight">
               Billigt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unikt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Användbart
             </p>
@@ -55,7 +55,7 @@ export default function Index() {
         <div className="w-full h-1 bg-[hsl(var(--logo-blue))]" />
 
         <section className="pt-2 md:pt-3 pb-16 md:pb-24" aria-labelledby="shop-heading">
-          <div className="container mx-auto px-4 md:px-6">
+          <div className="w-full px-4 md:px-6">
             <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h2 id="shop-heading" className="font-heading text-3xl font-bold text-foreground md:text-4xl">Vår butik</h2>
