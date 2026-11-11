@@ -209,7 +209,7 @@ export const shopColumns: { title: string; items: Product[] }[] = [
       },
       {
         name: "Kulspetspenna",
-        image: "/images/Tändsticksask/image copy 4.png",
+        image: "/images/Kulspetspenna/image.png",
         description: "Skapa den perfekta pennan för ditt företag. Du kan välja mellan många olika färger på den här pennan, så att du kan hitta den perfekta kombinationen som passar din stil. Lägg bara till din logotyp och dela ut den och marknadsför företaget på konferenser och mässor. Tack vare att de är så prisvärda behöver du inte hålla igen när du ger bort pennorna.",
         options: [
           {
