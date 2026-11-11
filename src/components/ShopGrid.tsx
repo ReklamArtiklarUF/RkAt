@@ -349,9 +349,15 @@ export const shopColumns: { title: string; items: Product[] }[] = [
 ];
 
 export default function ShopGrid() {
-  const products = shopColumns.flatMap((column) =>
-    column.items.map((item, index) => ({ column, item, index })),
-  );
+  const featuredOrder = ["Bomullskasse", "Läppbalsam", "Tändsticksask", "Vattenflaska"];
+  const products = shopColumns
+    .flatMap((column) => column.items.map((item, index) => ({ column, item, index })))
+    .filter(({ item }) => item.image)
+    .sort((a, b) => {
+      const aOrder = featuredOrder.indexOf(a.item.name);
+      const bOrder = featuredOrder.indexOf(b.item.name);
+      return (aOrder === -1 ? featuredOrder.length : aOrder) - (bOrder === -1 ? featuredOrder.length : bOrder);
+    });
 
   return (
     <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
