@@ -77,7 +77,7 @@ export default function Produkt() {
                                 <li>OEKO-TEX® certifierad</li>
                                 <li>100 % bomull, 140 g/m²</li>
                                 <li>Digitaltryck (CMYK) eller 1 till 4 färgscreentryck (Pantone C + vit)</li>
-                                <li>Tryckbar fram- och/eller baksida (olika motiv möjliga)</li>
+                                <li>Tryckbar på framsidan eller med samma motiv fram och bak</li>
                                 <li>Många grundfärger</li>
                               </ul>
                             </>
@@ -142,7 +142,7 @@ export default function Produkt() {
             </div>
             {found.item.options?.length ? (
               <div ref={customization} className="scroll-mt-24">
-                <ProductCustomizer key={slug} options={found.item.options} productName={found.item.name} minQuantity={found.item.minQuantity} />
+                <ProductCustomizer key={slug} options={found.item.options} productName={found.item.name} minQuantity={found.item.minQuantity} maxQuantity={found.item.maxQuantity} quantityPrices={found.item.quantityPrices} />
               </div>
             ) : null}
           </>

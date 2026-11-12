@@ -2,21 +2,23 @@ import { useRef, useState } from "react";
 import { Check, Image as ImageIcon, ArrowRight, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import type { ProductOption } from "@/components/ShopGrid";
+import type { ProductOption, QuantityPrice } from "@/components/ShopGrid";
 import { availableChoices, configurationPrice, selectProductChoice } from "@/lib/product-configuration";
 import type { ProductSelections } from "@/lib/product-configuration";
 import { selectionsForCart, useCart } from "@/context/CartContext";
 
 const priceFormat = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", maximumFractionDigits: 0 });
+const unitPriceFormat = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", maximumFractionDigits: 2 });
 
-export default function ProductCustomizer({ options, productName, minQuantity = 1 }: { options: ProductOption[]; productName: string; minQuantity?: number }) {
+export default function ProductCustomizer({ options, productName, minQuantity = 1, maxQuantity, quantityPrices }: { options: ProductOption[]; productName: string; minQuantity?: number; maxQuantity?: number; quantityPrices?: QuantityPrice[] }) {
+  const fixedQuantity = maxQuantity !== undefined && maxQuantity === minQuantity;
   const [selected, setSelected] = useState<ProductSelections>({});
   const [addedMessage, setAddedMessage] = useState(false);
   const { addItem } = useCart();
-  const [quantityText, setQuantityText] = useState("");
+  const [quantityText, setQuantityText] = useState(fixedQuantity ? String(minQuantity) : "");
   const quantity = Number(quantityText);
-  const validQuantity = Number.isInteger(quantity) && quantity >= minQuantity;
-  const price = validQuantity ? configurationPrice(options, selected, quantity) : null;
+  const validQuantity = Number.isInteger(quantity) && quantity >= minQuantity && (maxQuantity === undefined || quantity <= maxQuantity);
+  const price = validQuantity ? configurationPrice(options, selected, quantity, quantityPrices) : null;
   const stepRefs = useRef<(HTMLFieldSetElement | null)[]>([]);
   const quantityRef = useRef<HTMLDivElement>(null);
   const priceRef = useRef<HTMLDivElement>(null);
@@ -89,17 +91,19 @@ export default function ProductCustomizer({ options, productName, minQuantity = 
             <legend className="mb-5 flex items-center gap-3 font-heading text-xl font-semibold">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-sm text-primary">{options.length + 1}</span>Antal {productName.toLowerCase()}
             </legend>
-            {minQuantity > 1 && <p className="mb-4 text-sm font-medium text-muted-foreground">Minsta antal {minQuantity.toLocaleString("sv-SE")} st.</p>}
+            {fixedQuantity
+              ? <p className="mb-4 text-sm font-medium text-muted-foreground">Säljs endast i {minQuantity.toLocaleString("sv-SE")} st.</p>
+              : minQuantity > 1 && <p className="mb-4 text-sm font-medium text-muted-foreground">Minsta antal {minQuantity.toLocaleString("sv-SE")} st.</p>}
             <label htmlFor="product-quantity" className="block text-sm font-medium mb-2">Antal {productName.toLowerCase()}</label>
-            <input id="product-quantity" type="number" min={minQuantity} step="1" inputMode="numeric" value={quantityText} onChange={(event) => setQuantityText(event.target.value)} className="h-11 w-40 rounded-md border border-input bg-background px-3 text-foreground" placeholder={`Minst ${minQuantity.toLocaleString("sv-SE")}`} aria-invalid={quantityText !== "" && !validQuantity} />
-            {quantityText !== "" && !validQuantity && <p className="mt-2 text-sm text-destructive">Ange minst {minQuantity.toLocaleString("sv-SE")} st.</p>}
+            <input id="product-quantity" type="number" min={minQuantity} max={maxQuantity} step="1" inputMode="numeric" readOnly={fixedQuantity} value={quantityText} onChange={(event) => setQuantityText(event.target.value)} className={`h-11 w-40 rounded-md border border-input bg-background px-3 text-foreground ${fixedQuantity ? "cursor-default bg-muted" : ""}`} placeholder={`Minst ${minQuantity.toLocaleString("sv-SE")}`} aria-invalid={quantityText !== "" && !validQuantity} />
+            {quantityText !== "" && !validQuantity && <p className="mt-2 text-sm text-destructive">{maxQuantity !== undefined ? `Ange ${minQuantity.toLocaleString("sv-SE")}–${maxQuantity.toLocaleString("sv-SE")} st.` : `Ange minst ${minQuantity.toLocaleString("sv-SE")} st.`}</p>}
           </fieldset>
         </div>
         <div ref={priceRef} className="border-t-2 border-primary pt-6 scroll-mt-24" aria-live="polite" aria-atomic="true">
           <h3 className="font-heading text-xl font-semibold">Estimerat pris</h3>
           {price ? <>
             <p className="mt-3 font-heading text-4xl font-bold">{priceFormat.format(price.total)}</p>
-            <p className="mt-2 text-sm text-muted-foreground">{priceFormat.format(price.unit)} per st × {quantity} st</p>
+            <p className="mt-2 text-sm text-muted-foreground">{unitPriceFormat.format(price.unit)} per st × {quantity} st</p>
             <dl className="mt-5 grid gap-2 text-sm sm:grid-cols-2">{options.map((option) => <div key={option.id}><dt className="text-muted-foreground">{option.label}</dt><dd className="font-medium">{option.choices[selected[option.id]]?.label}</dd></div>)}</dl>
           </> : <p className="mt-3 text-muted-foreground">Välj alla alternativ och antal för att se priset.</p>}
           <p className="mt-4 text-sm text-muted-foreground">Preliminärt exempelpris, inte en offert. Som UF företag är vi moms befriade, så alla priser är inkl moms och frakt.</p>

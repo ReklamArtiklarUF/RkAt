@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import heroImage from "@/assets/hero-classroom.jpg";
+import heroImage from "@/assets/hero-produkter.jpg";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShopGrid from "@/components/ShopGrid";
@@ -15,7 +15,7 @@ export default function Index() {
         <section className="relative min-h-[460px] lg:min-h-[540px] flex items-center">
           <img
             src={heroImage}
-            alt="Elever som lär sig tillsammans i ett ljust klassrum"
+            alt="Reklamartiklar med RkAt-logga: vattenflaska, bomullskasse, pennor, läppbalsam och tändsticksaskar"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="hero-overlay absolute inset-0" />

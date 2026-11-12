@@ -9,7 +9,24 @@ export type ProductChoice = {
   dependsOn?: { optionId: string; choiceLabels: string[] };
   excludedChoiceLabels?: { optionId: string; choiceLabels: string[] };
   scale?: number;
+  /** Totalpris för hela beställningen vid ett visst antal. Ersätter styckpriserna när valet är gjort. */
+  quantityPrices?: QuantityPrice[];
+  /** Andra prislistor som gäller i stället när ett annat val är gjort, t.ex. tryck på båda sidor. */
+  quantityPriceVariants?: { optionId: string; choiceLabel: string; prices: QuantityPrice[] }[];
 };
+
+export type QuantityPrice = { quantity: number; total: number };
+
+const priceList = (quantities: number[], totals: number[]): QuantityPrice[] =>
+  quantities.map((quantity, index) => ({ quantity, total: totals[index] }));
+
+const lipBalmQuantities = [250, 300, 350, 400, 500, 750, 1000, 1500, 2000, 2500];
+const toteBagQuantities = [50, 75, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000];
+const bottlePrices = (totals: number[]) => priceList([10, 30, 50, 100, 200, 250, 500, 1000, 2500], totals);
+const bottleSmallPrint = (totals: number[]) => [{ optionId: "tryckstorlek", choiceLabel: "70 × 30 mm", prices: bottlePrices(totals) }];
+const toteBagBothSides =(totals: number[]) => [
+  { optionId: "motiv", choiceLabel: "Samma motiv fram och bak", prices: priceList(toteBagQuantities, totals) },
+];
 
 export type ProductOption = {
   id: string;
@@ -24,6 +41,10 @@ export type Product = {
   description?: string;
   options?: ProductOption[];
   minQuantity?: number;
+  /** Högsta antal. Samma som minQuantity betyder att produkten bara säljs i exakt det antalet. */
+  maxQuantity?: number;
+  /** Prislista för hela produkten, används när inget val har en egen prislista. */
+  quantityPrices?: QuantityPrice[];
 };
 
 
@@ -66,7 +87,8 @@ export const shopColumns: { title: string; items: Product[] }[] = [
     items: [
       {
         name: "Bomullskasse",
-        image: "/images/image.png",
+        image: "/images/bomullskasse.jpg",
+        minQuantity: 50,
         description: "En bomullskasse med plats för ert motiv. Välj mellan två format och kombinera grundfärg, placering och tryck efter era önskemål.",
         options: [
           {
@@ -74,8 +96,8 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             label: "Format",
             kind: "image",
             choices: [
-              { label: "40 x 10 x 35", price: 39, image: "/images/40x10x35/image.png" },
-              { label: "38 x 10 x 42", price: 49, image: "/images/38x10x42/image.png", scale: 0.8 },
+              { label: "40 x 10 x 35", price: 0, image: "/images/40x10x35/image.png" },
+              { label: "38 x 10 x 42", price: 0, image: "/images/38x10x42/image.png", scale: 0.8 },
             ],
           },
           {
@@ -120,7 +142,6 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             choices: [
               { label: "Ett motiv på framsidan", price: 0 },
               { label: "Samma motiv fram och bak", price: 0 },
-              { label: "Olika motiv fram och bak", price: 0 },
             ],
           },
           {
@@ -128,8 +149,8 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             label: "Tryck",
             kind: "button",
             choices: [
-              { label: "Digital transfertryck", price: 25 },
-              { label: "Screentryck", price: 9 },
+              { label: "Digital transfertryck", price: 0 },
+              { label: "Screentryck", price: 0 },
             ],
           },
           {
@@ -137,11 +158,31 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             label: "Färgning",
             kind: "button",
             choices: [
-              { label: "4 färger", price: 0, printMethod: "Digital transfertryck" },
-              { label: "1 färg", price: 0, printMethod: "Screentryck" },
-              { label: "2 färger", price: 6, printMethod: "Screentryck" },
-              { label: "3 färger", price: 0, printMethod: "Screentryck" },
-              { label: "5 färger", price: 0, printMethod: "Screentryck" },
+              {
+                label: "4 färger", price: 0, printMethod: "Digital transfertryck",
+                quantityPrices: priceList(toteBagQuantities, [4082.89, 5568.28, 6749.98, 9945.14, 13180.64, 14781.65, 17309.11, 23034.61, 26938.69, 31628.64, 36989.82, 42351.45, 47041.4, 50865.46]),
+                quantityPriceVariants: toteBagBothSides([5382.02, 7457.15, 9045.5, 12959.78, 17431.1, 19553.64, 23078.09, 30649.19, 36415.73, 43102.94, 50313.05, 57523.58, 64211.03, 68837.33]),
+              },
+              {
+                label: "1 färg", price: 0, printMethod: "Screentryck",
+                quantityPrices: priceList(toteBagQuantities, [3715.36, 4809.54, 6245.94, 8733.08, 11174.94, 14007.31, 14692.28, 19315.71, 21218.07, 25296.44, 29375.48, 33454.07, 37532.86, 40657.07]),
+                quantityPriceVariants: toteBagBothSides([4429.41, 5837.25, 7413, 10354.71, 13179.08, 16461.81, 17324.19, 22824.62, 24778.44, 29569.28, 34360.13, 39150.96, 43941.81, 47441.63]),
+              },
+              {
+                label: "2 färger", price: 0, printMethod: "Screentryck",
+                quantityPrices: priceList(toteBagQuantities, [5232.54, 6600.51, 8309.07, 11193.57, 14023.28, 17386.49, 18164.4, 23670.36, 25602.68, 30393.51, 35184.14, 39975.21, 43565.6, 48208.22]),
+                quantityPriceVariants: toteBagBothSides([5310.23, 6898.28, 10656.5, 14451.9, 18367.73, 22332.57, 23445.3, 30711.5, 32723.19, 38938.07, 45153.21, 51368.1, 57583.25, 61719.02]),
+              },
+              {
+                label: "3 färger", price: 0, printMethod: "Screentryck",
+                quantityPrices: priceList(toteBagQuantities, [6751.55, 8545.78, 10393.71, 13684.22, 17068.51, 20669.91, 21518.1, 27867.15, 29987.72, 35491.49, 40994.77, 46498.32, 52001.87, 56154.74]),
+                quantityPriceVariants: toteBagBothSides([8851.26, 11419.1, 13943.67, 18611.45, 23638.67, 27969.83, 29334, 38287.49, 40683.69, 48326.42, 55968.92, 63611.87, 71254.82, 76789.4]),
+              },
+              {
+                label: "4 färger", price: 0, printMethod: "Screentryck",
+                quantityPrices: priceList(toteBagQuantities, [8268.96, 10187.26, 12445.55, 16130.97, 20056.56, 24071.97, 25004.18, 32240.44, 34343.26, 40552.4, 46761.98, 52970.9, 59180.68, 63761.77]),
+                quantityPriceVariants: toteBagBothSides([11061.62, 14207.54, 17164.32, 22680.95, 28790.07, 33853.65, 35476.4, 46204.28, 48555.69, 57608.07, 66659.78, 75711.69, 84763.86, 91191.2]),
+              },
             ],
           },
         ],
@@ -160,6 +201,7 @@ export const shopColumns: { title: string; items: Product[] }[] = [
         name: "Läppbalsam",
         image: "/images/basic/lapbalsam_rkat.jpg",
         description: "Läppbalsam med valfri grundfärg och tryckmetod.",
+        minQuantity: 250,
         options: [
           {
             id: "farg",
@@ -199,10 +241,22 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             label: "Antal tryckfärger",
             kind: "button",
             choices: [
-              { label: "1 färg", price: 0, printMethod: "Tampongtryck" },
-              { label: "2 färger", price: 0, printMethod: "Tampongtryck" },
-              { label: "3 färger", price: 0, printMethod: "Tampongtryck" },
-              { label: "4-färgad (CMYK)", price: 0, printMethod: "Digitaltryck" },
+              {
+                label: "1 färg", price: 0, printMethod: "Tampongtryck",
+                quantityPrices: priceList(lipBalmQuantities, [4240.49, 4848.95, 5462.97, 6079.64, 6604.07, 9903.44, 11774.76, 17265.66, 22756.34, 27323.64]),
+              },
+              {
+                label: "2 färger", price: 0, printMethod: "Tampongtryck",
+                quantityPrices: priceList(lipBalmQuantities, [5273.6, 5954.79, 6636.45, 7330.5, 7918.14, 11531.07, 13649.19, 19719.74, 25790.04, 31075.4]),
+              },
+              {
+                label: "3 färger", price: 0, printMethod: "Tampongtryck",
+                quantityPrices: priceList(lipBalmQuantities, [6640.65, 7444.94, 8248.55, 9065.24, 9746.45, 13895.99, 16246.95, 23238.39, 30230.09, 36411.29]),
+              },
+              {
+                label: "4-färgad (CMYK)", price: 0, printMethod: "Digitaltryck",
+                quantityPrices: priceList(lipBalmQuantities, [4753.8, 5464.52, 6182.09, 6900.99, 7630.97, 11443.92, 13615.26, 20010.66, 26406.08, 31911.6]),
+              },
             ],
           },
         ],
@@ -210,6 +264,11 @@ export const shopColumns: { title: string; items: Product[] }[] = [
       {
         name: "Kulspetspenna",
         image: "/images/Kulspetspenna/image copy.png?v=2",
+        minQuantity: 150,
+        quantityPrices: priceList(
+          [150, 250, 350, 400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 2000, 2500],
+          [3275, 3751.26, 4366.26, 4641.87, 4966.88, 5529.38, 6039.38, 6436.88, 6716.25, 6898.13, 7648.13, 8145, 9916.88, 11398.13],
+        ),
         description: "Skapa den perfekta pennan för ditt företag. Du kan välja mellan många olika färger på den här pennan, så att du kan hitta den perfekta kombinationen som passar din stil. Lägg bara till din logotyp och dela ut den och marknadsför företaget på konferenser och mässor. Tack vare att de är så prisvärda behöver du inte hålla igen när du ger bort pennorna.",
         options: [
           {
@@ -271,6 +330,8 @@ export const shopColumns: { title: string; items: Product[] }[] = [
         image: "/images/Tändsticksask/image.png",
         description: "Tändsticksask med valfri färg på lådan och plats för din logotyp.",
         minQuantity: 2500,
+        maxQuantity: 2500,
+        quantityPrices: [{ quantity: 2500, total: 14789 }],
         options: [
           {
             id: "farg",
@@ -292,6 +353,7 @@ export const shopColumns: { title: string; items: Product[] }[] = [
       {
         name: "Vattenflaska",
         image: "/images/Tändsticksask/image copy 5.png",
+        minQuantity: 10,
         options: [
           {
             id: "farg",
@@ -312,10 +374,27 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             label: "Antal färger i din design",
             kind: "button",
             choices: [
-              { label: "1 färg", price: 0 },
-              { label: "2 färger", price: 0 },
-              { label: "3 färger", price: 0 },
-              { label: "4 färger", price: 0 },
+              // Grundpriset gäller 150 × 120 mm, varianten 70 × 30 mm.
+              {
+                label: "1 färg", price: 0,
+                quantityPrices: bottlePrices([2227.15, 3478.1, 4276.59, 6048.2, 11007.08, 12570.76, 22220.71, 38983.75, 94128.61]),
+                quantityPriceVariants: bottleSmallPrint([2060.8, 2979.05, 3542.99, 5510.89, 9932.45, 11288.22, 21122.79, 38750.84, 93546.37]),
+              },
+              {
+                label: "2 färger", price: 0,
+                quantityPrices: bottlePrices([3085.57, 5055.14, 6126.43, 7918.02, 14224.34, 15806.32, 26161.57, 45822.42, 108645.97]),
+                quantityPriceVariants: bottleSmallPrint([2945.79, 4288.23, 4875.43, 6841.68, 11923.66, 13487.34, 23870.89, 42182.65, 101166.85]),
+              },
+              {
+                label: "3 färger", price: 0,
+                quantityPrices: bottlePrices([4148.54, 6964.85, 8442.03, 10280.18, 18308.22, 19936.77, 31918.94, 54605.68, 126736.5]),
+                quantityPriceVariants: bottleSmallPrint([3880.67, 5752.1, 6414.18, 8393.72, 14354.04, 15990.92, 27352.58, 47010.11, 112277.34]),
+              },
+              {
+                label: "4 färger", price: 0,
+                quantityPrices: bottlePrices([5301.35, 9140.69, 10967.22, 12945.1, 22995.95, 24880.68, 38609.5, 65019.16, 146573.69]),
+                quantityPriceVariants: bottleSmallPrint([4855.48, 7332.42, 8112.6, 10115.45, 17127.08, 18800.56, 30711.18, 52769.13, 124552.28]),
+              },
             ],
           },
           {
@@ -323,9 +402,9 @@ export const shopColumns: { title: string; items: Product[] }[] = [
             label: "Tryckalternativ",
             kind: "button",
             choices: [
-              { label: "Lasergravyr", price: 0 },
-              { label: "Fullfärg", price: 0 },
-              { label: "Otryckt", price: 0 },
+              { label: "Lasergravyr", price: 0, quantityPrices: bottlePrices([1924.39, 3057.24, 3579.58, 5314.6, 9786.07, 11411.32, 21488.76, 39216.63, 95058.49]) },
+              { label: "Fullfärg", price: 0, quantityPrices: bottlePrices([2248.78, 3421.54, 4032.04, 6500.67, 11306.52, 13330.99, 25313.15, 49279.11, 120945.82]) },
+              { label: "Otryckt", price: 0, quantityPrices: bottlePrices([1117.6, 1540.13, 1964.33, 3511.36, 6605.47, 8152.51, 15889.44, 31363.28, 77783.11]) },
             ],
           },
           {
