@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 export default function Footer() {
@@ -28,10 +28,6 @@ export default function Footer() {
               <li className="flex items-start gap-2 md:flex-row-reverse">
                 <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
                 <span>Sundsvalls gymnasium, Västermalm</span>
-              </li>
-              <li className="flex items-center gap-2 md:flex-row-reverse">
-                <Phone className="h-4 w-4 shrink-0" />
-                <span>08-123 456 78</span>
               </li>
               <li className="flex items-center gap-2 md:flex-row-reverse">
                 <Mail className="h-4 w-4 shrink-0" />
