@@ -61,6 +61,10 @@ jobs:
         working-directory: ${{ env.REL }}
         run: npm ci --include=dev --no-audit --no-fund
 
+      - name: npm ci (server)
+        working-directory: ${{ env.REL }}/server
+        run: npm ci --omit=dev --no-audit --no-fund
+
       - name: npm run build
         working-directory: ${{ env.REL }}
         run: |
