@@ -1,0 +1,21 @@
+[Unit]
+Description=ReklamArtiklar UF (static site + SMTP contact API)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/reklamartiklar
+# Absolut sökväg krävs. Hitta den med: command -v node
+# Exempel: /usr/bin/node  eller  /home/fwk/.nvm/versions/node/v22.x.x/bin/node
+ExecStart=/usr/bin/node server.mjs
+Restart=on-failure
+Environment=CONTACT_CONFIG_PATH=/etc/reklamartiklar/contact.env
+Environment=STATIC_ROOT=/opt/reklamartiklar/dist
+Environment=PORT=3010
+# Använd samma användare som äger /opt/reklamartiklar om www-data ger permission-fel
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target
+

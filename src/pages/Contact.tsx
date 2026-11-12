@@ -6,7 +6,7 @@ import { useCart } from "@/context/CartContext";
 import { formatCartSummary } from "@/lib/contact-email";
 
 export default function Contact() {
-  const { items, total } = useCart();
+  const { items, total, clearCart } = useCart();
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const priceFormat = new Intl.NumberFormat("sv-SE", { style: "currency", currency: "SEK", maximumFractionDigits: 0 });
@@ -16,13 +16,14 @@ export default function Contact() {
     event.preventDefault();
     setSending(true);
     setStatus(null);
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const contactApiUrl = import.meta.env.VITE_CONTACT_API_URL || "/api/contact";
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
+      const response = await fetch(contactApiUrl, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -32,10 +33,28 @@ export default function Contact() {
           cartSummary,
         }),
       });
-      const result: { success?: boolean; error?: string } = await response.json();
-      if (!response.ok || !result.success) throw new Error(result.error ?? "Meddelandet kunde inte skickas.");
+
+      const raw = await response.text();
+      let result: { success?: boolean; error?: string } = {};
+      if (raw) {
+        try {
+          result = JSON.parse(raw) as { success?: boolean; error?: string };
+        } catch {
+          throw new Error(
+            response.ok
+              ? "Oväntat svar från servern."
+              : `Meddelandet kunde inte skickas (HTTP ${response.status}).`,
+          );
+        }
+      }
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error ?? `Meddelandet kunde inte skickas (HTTP ${response.status}).`);
+      }
+
       setStatus({ type: "success", message: "Tack! Ditt meddelande har skickats till oss." });
-      event.currentTarget.reset();
+      form.reset();
+      if (items.length > 0) clearCart();
     } catch (error) {
       setStatus({ type: "error", message: error instanceof Error ? error.message : "Meddelandet kunde inte skickas just nu." });
     } finally {
@@ -76,15 +95,15 @@ export default function Contact() {
             <form className="card-elevated space-y-5" onSubmit={submitContact}>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1.5">Namn <span className="text-destructive">*</span></label>
-                <input id="name" type="text" required className="w-full border-2 border-input rounded-lg px-4 py-3 text-foreground bg-background placeholder:text-muted-foreground focus:border-primary" placeholder="Ditt fullständiga namn" />
+                <input id="name" name="name" type="text" required autoComplete="name" className="w-full border-2 border-input rounded-lg px-4 py-3 text-foreground bg-background placeholder:text-muted-foreground focus:border-primary" placeholder="Ditt fullständiga namn" />
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1.5">E-post <span className="text-destructive">*</span></label>
-                <input id="email" type="email" required className="w-full border-2 border-input rounded-lg px-4 py-3 text-foreground bg-background placeholder:text-muted-foreground focus:border-primary" placeholder="du@exempel.se" />
+                <input id="email" name="email" type="email" required autoComplete="email" className="w-full border-2 border-input rounded-lg px-4 py-3 text-foreground bg-background placeholder:text-muted-foreground focus:border-primary" placeholder="du@exempel.se" />
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-foreground mb-1.5">Meddelande <span className="text-destructive">*</span></label>
-                <textarea id="message" required rows={4} className="w-full border-2 border-input rounded-lg px-4 py-3 text-foreground bg-background placeholder:text-muted-foreground focus:border-primary resize-y" placeholder="Hur kan vi hjälpa dig?" />
+                <textarea id="message" name="message" required rows={4} className="w-full border-2 border-input rounded-lg px-4 py-3 text-foreground bg-background placeholder:text-muted-foreground focus:border-primary resize-y" placeholder="Hur kan vi hjälpa dig?" />
               </div>
               <Button type="submit" className="w-full" disabled={sending}>{sending ? "Skickar..." : "Skicka meddelande"}</Button>
             </form>
