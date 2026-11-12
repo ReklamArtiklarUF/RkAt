@@ -50,8 +50,11 @@ jobs:
           set -euo pipefail
           rsync -a --delete --exclude .git src/ "$REL/"
           echo "$GITHUB_SHA" > "$REL/REVISION"
+          # Länka in delade filer om de finns; en saknad (valfri) fil ska inte fälla steget.
           for f in .env; do
-            [ -e "$BASE_DIR/shared/$f" ] && ln -sfn "$BASE_DIR/shared/$f" "$REL/$f"
+            if [ -e "$BASE_DIR/shared/$f" ]; then
+              ln -sfn "$BASE_DIR/shared/$f" "$REL/$f"
+            fi
           done
 
       - name: npm ci
